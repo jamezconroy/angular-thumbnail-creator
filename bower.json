@@ -1,0 +1,25 @@
+{
+  "name": "angular-thumbnail-creator",
+  "version": "0.0.1",
+  "authors": [
+    "Jamez Conroy <jamezconroy@gmail.com>"
+  ],
+  "description": "Create thumbnails from image files with intelligent resizing",
+  "main": "angular-thumbnail-creator.js",
+  "keywords": [
+    "image",
+    "reduce",
+    "thumbnail"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "blueimp-canvas-to-blob": "~2.1.1"
+  }
+}
