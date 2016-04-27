@@ -11,7 +11,8 @@ angular.module('ngCreateThumbnail', [])
     destY: 0,
     sourceWidth: 0,
     sourceHeight: 0,
-    reduceStrategy: ''
+    reduceStrategy: '',
+    targetType: 'blob'
   };
 
   this.$get = ['$q', function($q) {
@@ -24,6 +25,22 @@ angular.module('ngCreateThumbnail', [])
 
         options = options || {};
 
+        function dataURLToBlob(dataURL) {
+          var byteString;
+          if (dataURL.split(',')[0].indexOf('base64') >= 0) {
+            byteString = atob(dataURL.split(',')[1]);
+          } else {
+            byteString = unescape(dataURL.split(',')[1]);
+          }
+          var mimeString = dataURL.split(',')[0].split(':')[1].split(';')[0];
+
+          var ia = new Uint8Array(byteString.length);
+          for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+          }
+          return new Blob([ia], {type:mimeString});
+        };
+
         this.loadThumbnail(sourceImage, options).loaded.then(
           function success(canvas) {
 
@@ -32,14 +49,23 @@ angular.module('ngCreateThumbnail', [])
             }
 
             try {
+
+              var targetType = options.targetType || defaults.targetType;
               var base64 = canvas.toDataURL(options.type, options.encoderOptions);
-              deferred.resolve(base64);
+              if (targetType === 'base64') {
+                deferred.resolve(base64);
+              } else if (targetType === 'blob') {
+                var blob = dataURLToBlob(base64);
+                deferred.resolve(blob);
+              } else {
+                return deferred.reject('Unknown targetType.');
+              }
+
             } catch (ex) {
               deferred.reject(ex);
             }
           }
         );
-
         return deferred.promise;
       },
 
@@ -155,3 +181,40 @@ angular.module('ngCreateThumbnail', [])
     };
   }];
 })
+
+.directive('uiThumbnailJames', function(CreateThumbnailService) {
+
+  return {
+
+    restrict: 'E',
+
+    scope: {
+      src: '=',
+      options: '='
+    },
+
+    link: function link(scope, el, attrs) {
+      var promises = CreateThumbnailService.loadThumbnail(scope.src, scope.options);
+
+      promises.created.then(
+        function created(canvas) {
+          // can be appended at this point
+          el.append(canvas);
+        }
+      );
+
+      promises.loaded.then(
+        function loaded(canvas) {
+          scope.$watch('src', function(newSrc) {
+            CreateThumbnailService.drawThumbnail(canvas, newSrc);
+          });
+          scope.$watchCollection('options', function(newOptions) {
+            CreateThumbnailService.setCanvasSize(canvas, newOptions);
+            // need to redraw
+            CreateThumbnailService.drawThumbnail(canvas, scope.src, newOptions);
+          });
+        }
+      );
+    }
+  };
+});
