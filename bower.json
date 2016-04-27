@@ -1,6 +1,6 @@
 {
   "name": "angular-thumbnail-creator",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "angular-thumbnail-creator.js",
   "authors": [
     "Jamez Conroy <jamezconroy@gmail.com>"
