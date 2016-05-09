@@ -14,7 +14,7 @@ module.exports = function (grunt) {
   grunt.initConfig({
 
     // Project settings
-    yeoman: appConfig,
+    thumbgen: appConfig,
 
     jshint: {
       options: {
@@ -24,7 +24,7 @@ module.exports = function (grunt) {
       all: {
         src: [
           'Gruntfile.js',
-          '<%= yeoman.app %>/{,*/}*.js'
+          '<%= thumbgen.app %>/{,*/}*.js'
         ]
       }
     },
@@ -36,7 +36,7 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/{,*/}*'
+            '<%= thumbgen.dist %>/{,*/}*'
           ]
         }]
       }
@@ -46,7 +46,7 @@ module.exports = function (grunt) {
     filerev: {
       dist: {
         src: [
-          '<%= yeoman.dist %>/{,*/}*.js'
+          '<%= thumbgen.dist %>/{,*/}*.js'
         ]
       }
     },
@@ -56,10 +56,10 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
+          cwd: '<%= thumbgen.app %>',
+          dest: '<%= thumbgen.dist %>',
           src: [
-            '*.js'
+            '*.js', '*.json'
           ]
         }]
       }
