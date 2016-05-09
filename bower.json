@@ -8,21 +8,16 @@
   "description": "Create thumbnails from image files with intelligent resizing",
   "ignore": [
     "source",
-    "spec",
+    "node_modules",
     ".bowerrc",
     ".gitignore",
     ".jshintignore",
     ".jshintrc",
     "bower.json",
-    "gruntfile.js",
+    "Gruntfile.js",
     "package.json",
     "README.md",
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests",
-    ".idea"
+    "LICENSE"
   ],
   "dependencies": {
   },
